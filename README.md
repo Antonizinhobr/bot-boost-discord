@@ -52,9 +52,14 @@ Todos os comandos são restritos apenas para usuários com a permissão de **Adm
 
 ---
 
-## 🛠️ Guia de Instalação (Local)
+## 🛠️ Guia de Instalação e Hospedagem
 
-### 1. Pré-requisitos
+> [!IMPORTANT]
+> **O Arauto da Entidade é um bot público!** Você **não precisa** baixar o código, configurá-lo na sua máquina ou pagar por hospedagem para utilizá-lo. Basta adicioná-lo ao seu servidor através do link de convite oficial e ele estará pronto para uso.
+> 
+> O guia de instalação local e hospedagem abaixo é destinado **apenas** a desenvolvedores que desejam realizar o **Self-Hosting** (hospedagem própria) para rodar uma instância privada do bot.
+
+### 1. Pré-requisitos (Local)
 * Ter o [Node.js](https://nodejs.org/) instalado na sua máquina.
 * Ter criado uma aplicação no [Discord Developer Portal](https://discord.com/developers/applications) e ter o **Token do Bot**.
 * No Developer Portal, ative as **Privileged Gateway Intents** (`Presence`, `Server Members`, e `Message Content`).
@@ -89,7 +94,7 @@ Se tudo der certo, o console mostrará: `🩸 O Arauto da Entidade despertou com
 Para manter o bot online sem depender do seu computador, você pode hospedá-lo na [Discloud](https://discloudbot.com/).
 
 ### 1. Prepare o arquivo `discloud.config`
-Certifique-se de que o arquivo na raiz do seu projeto esteja configurado mais ou menos assim:
+Certifique-se de que o arquivo na raiz do seu projeto esteja configurado assim:
 
 ```ini
 NAME=BotBooster
