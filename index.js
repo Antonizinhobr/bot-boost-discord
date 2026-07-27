@@ -17,9 +17,10 @@ const fs = require('fs');
 
 const DB_PATH = './boost_config.json';
 
-// --- TEXTOS DE CRÉDITO PADRÃO ---
+// --- TEXTOS E IMAGENS DE CRÉDITO PADRÃO ---
 const CREDITO_BOT = 'Bot desenvolvido por Anthonny Michael, entre em contato com o comando "/contato".';
 const CREDITO_TEXTO = '\n\n*Bot desenvolvido por Anthonny Michael, entre em contato com o comando "/contato".*';
+const URL_FOTO_DEV = 'https://avatars.githubusercontent.com/Antonizinhobr';
 
 function lerConfig() {
     if (!fs.existsSync(DB_PATH)) {
@@ -85,7 +86,7 @@ async function enviarMensagemBoost(member) {
             .setImage('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmdkZ2swZmszbjh6Y3Q2cWZmanlhdWo4YzVuMXEwODEwOXJzMXhxdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mnJN9H87ghKpPMxi1a/giphy.gif')
             .setFooter({ 
                 text: `A Morte não é o refúgio. | ${CREDITO_BOT}`,
-                iconURL: member.guild.iconURL({ dynamic: true }) 
+                iconURL: URL_FOTO_DEV 
             })
             .setTimestamp();
 
@@ -177,9 +178,10 @@ client.on('interactionCreate', async interaction => {
     if (interaction.commandName === 'contato') {
         const embedContato = new EmbedBuilder()
             .setColor('#5865F2')
+            .setAuthor({ name: '👨‍💻 Anthonny Michael', iconURL: URL_FOTO_DEV })
             .setTitle('📱 Entre em Contato com o Desenvolvedor')
             .setDescription('Olá! Sou o **Anthonny Michael**, desenvolvedor deste bot. Fique à vontade para entrar em contato comigo através das minhas redes sociais abaixo, caso tenha algum problema ou dúvida sobre o bot:')
-            .setThumbnail('https://avatars.githubusercontent.com/Antonizinhobr')
+            .setThumbnail(URL_FOTO_DEV)
             .addFields(
                 { 
                     name: '👨‍💻 Sobre Mim', 
@@ -192,7 +194,7 @@ client.on('interactionCreate', async interaction => {
                     inline: false 
                 }
             )
-            .setFooter({ text: CREDITO_BOT })
+            .setFooter({ text: CREDITO_BOT, iconURL: URL_FOTO_DEV })
             .setTimestamp();
 
         const row = new ActionRowBuilder()
