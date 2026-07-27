@@ -85,7 +85,7 @@ async function enviarMensagemBoost(member) {
             .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 1024 }))
             .setImage('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmdkZ2swZmszbjh6Y3Q2cWZmanlhdWo4YzVuMXEwODEwOXJzMXhxdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mnJN9H87ghKpPMxi1a/giphy.gif')
             .setFooter({ 
-                text: `A Morte não é o refúgio. | ${CREDITO_BOT}`,
+                text: `${CREDITO_BOT}`,
                 iconURL: URL_FOTO_DEV 
             })
             .setTimestamp();
