@@ -1,8 +1,25 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, EmbedBuilder, PermissionFlagsBits, MessageFlags, SlashCommandBuilder, REST, Routes, ChannelType } = require('discord.js');
+const { 
+    Client, 
+    GatewayIntentBits, 
+    EmbedBuilder, 
+    PermissionFlagsBits, 
+    MessageFlags, 
+    SlashCommandBuilder, 
+    REST, 
+    Routes, 
+    ChannelType,
+    ActionRowBuilder, 
+    ButtonBuilder, 
+    ButtonStyle 
+} = require('discord.js');
 const fs = require('fs');
 
 const DB_PATH = './boost_config.json';
+
+// --- TEXTOS DE CRÉDITO PADRÃO ---
+const CREDITO_BOT = 'Bot desenvolvido por Anthonny Michael, entre em contato com o comando "/contato".';
+const CREDITO_TEXTO = '\n\n*Bot desenvolvido por Anthonny Michael, entre em contato com o comando "/contato".*';
 
 function lerConfig() {
     if (!fs.existsSync(DB_PATH)) {
@@ -67,7 +84,7 @@ async function enviarMensagemBoost(member) {
             .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 1024 }))
             .setImage('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmdkZ2swZmszbjh6Y3Q2cWZmanlhdWo4YzVuMXEwODEwOXJzMXhxdSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mnJN9H87ghKpPMxi1a/giphy.gif')
             .setFooter({ 
-                text: 'A Morte não é o refúgio.',
+                text: `A Morte não é o refúgio. | ${CREDITO_BOT}`,
                 iconURL: member.guild.iconURL({ dynamic: true }) 
             })
             .setTimestamp();
@@ -97,7 +114,10 @@ client.once('ready', async () => {
             .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
             
         new SlashCommandBuilder().setName('testar_booster').setDescription('🧪 Testar a mensagem de anúncio de Boost')
-            .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+            .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+            
+        new SlashCommandBuilder().setName('contato')
+            .setDescription('📱 Entre em contato com o desenvolvedor do bot')
     ].map(command => command.toJSON());
 
     try {
@@ -132,10 +152,10 @@ client.on('interactionCreate', async interaction => {
 
             salvarConfig(interaction.guildId, { canalBoost: canal.id, cargoBooster: cargo.id });
             
-            return interaction.editReply(mensagemResposta);
+            return interaction.editReply(mensagemResposta + CREDITO_TEXTO);
         } catch (error) {
             console.error('Erro no setup do booster:', error);
-            return interaction.editReply('❌ Ocorreu um erro na configuração. Verifique as permissões do bot (ele precisa ter permissão de Gerenciar Cargos caso você peça para ele criar um).');
+            return interaction.editReply('❌ Ocorreu um erro na configuração. Verifique as permissões do bot (ele precisa ter permissão de Gerenciar Cargos caso você peça para ele criar um).' + CREDITO_TEXTO);
         }
     }
 
@@ -144,14 +164,75 @@ client.on('interactionCreate', async interaction => {
         
         const config = obterConfig(interaction.guildId);
         if (!config || !config.canalBoost) {
-            return interaction.editReply('❌ O bot ainda não foi configurado neste servidor. Use o comando **/setup_booster** primeiro!');
+            return interaction.editReply('❌ O bot ainda não foi configurado neste servidor. Use o comando **/setup_booster** primeiro!' + CREDITO_TEXTO);
         }
 
         console.log(`🧪 Teste de boost iniciado por ${interaction.user.tag}`);
         
         await enviarMensagemBoost(interaction.member);
         
-        return interaction.editReply(`✅ Teste de boost enviado com sucesso para o canal <#${config.canalBoost}>!`);
+        return interaction.editReply(`✅ Teste de boost enviado com sucesso para o canal <#${config.canalBoost}>!` + CREDITO_TEXTO);
+    }
+
+    if (interaction.commandName === 'contato') {
+        const embedContato = new EmbedBuilder()
+            .setColor('#5865F2')
+            .setTitle('📱 Entre em Contato com o Desenvolvedor')
+            .setDescription('Olá! Sou o **Anthonny Michael**, desenvolvedor deste bot. Fique à vontade para entrar em contato comigo através das minhas redes sociais abaixo, caso tenha algum problema ou dúvida sobre o bot:')
+            .setThumbnail('https://avatars.githubusercontent.com/Antonizinhobr')
+            .addFields(
+                { 
+                    name: '👨‍💻 Sobre Mim', 
+                    value: 'Sou um desenvolvedor apaixonado por tecnologia e automação. Este bot foi criado para recompensar e celebrar os membros que impulsionam a nossa comunidade!',
+                    inline: false 
+                },
+                { 
+                    name: '📱 Redes Sociais', 
+                    value: 'Clique nos botões abaixo para me seguir e acompanhar meu trabalho!',
+                    inline: false 
+                }
+            )
+            .setFooter({ text: CREDITO_BOT })
+            .setTimestamp();
+
+        const row = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setLabel('📸 Instagram')
+                    .setStyle(ButtonStyle.Link)
+                    .setURL('https://www.instagram.com/_ofcanthonny_santos__/')
+                    .setEmoji('📸'),
+                new ButtonBuilder()
+                    .setLabel('🎵 TikTok')
+                    .setStyle(ButtonStyle.Link)
+                    .setURL('https://www.tiktok.com/@anthonny_secbr')
+                    .setEmoji('🎵'),
+                new ButtonBuilder()
+                    .setLabel('💼 LinkedIn')
+                    .setStyle(ButtonStyle.Link)
+                    .setURL('https://www.linkedin.com/in/anthonny-michael/')
+                    .setEmoji('💼'),
+                new ButtonBuilder()
+                    .setLabel('🐙 GitHub')
+                    .setStyle(ButtonStyle.Link)
+                    .setURL('https://github.com/Antonizinhobr')
+                    .setEmoji('🐙')
+            );
+
+        const row2 = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setLabel('💬 Discord')
+                    .setStyle(ButtonStyle.Link)
+                    .setURL('https://discord.com/users/anthonnybrbr')
+                    .setEmoji('💬')
+            );
+
+        return interaction.reply({ 
+            embeds: [embedContato], 
+            components: [row, row2],
+            flags: MessageFlags.Ephemeral 
+        });
     }
 });
 
